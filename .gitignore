@@ -1,0 +1,12 @@
+# Ignore the Python virtual environment
+.venv/
+__pycache__/
+*.pyc
+
+# Ignore the local SQLite database file (so test entries don't sync)
+reviews.db
+
+# Ignore the heavy AI model folder (prevents GitHub 100MB block)
+models/
+results/
+*.zip

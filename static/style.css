@@ -1,0 +1,85 @@
+/* Base Styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #fdfaf6; /* Soft cream background */
+    color: #4a3728; /* Coffee bean brown */
+    display: flex;
+    justify-content: center;
+    padding: 50px 20px;
+}
+
+.container {
+    background: #ffffff;
+    max-width: 500px;
+    width: 100%;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+}
+
+h1 {
+    text-align: center;
+    color: #6f4e37; /* Lighter brown */
+}
+
+/* Form Styling */
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+input, textarea {
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 2px solid #eee;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+
+input:focus, textarea:focus {
+    border-color: #6f4e37;
+    outline: none;
+}
+
+/* Button Styling */
+button {
+    background-color: #6f4e37;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+button:hover {
+    background-color: #4a3728;
+}
+
+/* Admin Specific Portal */
+.review-box {
+    background: #f9f3ef;
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 5px solid #6f4e37;
+    margin-bottom: 20px;
+}
+
+.status-msg {
+    text-align: center;
+    padding: 20px;
+}
+
+a {
+    color: #6f4e37;
+    text-decoration: none;
+    font-weight: bold;
+}
