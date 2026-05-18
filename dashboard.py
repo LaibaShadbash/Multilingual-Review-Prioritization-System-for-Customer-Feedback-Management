@@ -2,15 +2,12 @@ import streamlit as st
 import sqlite3
 import pandas as pd
 from transformers import pipeline, AutoModelForSeq2SeqLM, AutoTokenizer
-import urllib.parse
 
-# 1. Load AI Models into Cache
 @st.cache_resource
 def load_models():
     # Local fine-tuned classification brain
     clf = pipeline("sentiment-analysis", model="./models/final_urgency_model")
     
-    # Explicitly load translation components to avoid task string verification bugs
     trans_tokenizer = AutoTokenizer.from_pretrained("Helsinki-NLP/opus-mt-ar-en")
     trans_model = AutoModelForSeq2SeqLM.from_pretrained("Helsinki-NLP/opus-mt-ar-en")
     
@@ -18,12 +15,10 @@ def load_models():
 
 classifier, translation_pack = load_models()
 
-# 2. Database Ingestion
 conn = sqlite3.connect('reviews.db')
 df = pd.read_sql_query("SELECT * FROM reviews", conn)
-conn.close() # Safe to close connection now since all data is cached in the DataFrame
+conn.close() 
 
-# 3. Dynamic Multilingual & Prioritization Processor
 def get_priority(row):
     text_to_analyze = row['content']
     
@@ -57,7 +52,6 @@ else:
     pending_df = df[df['status'] != 'Resolved'].copy()
     resolved_df = df[df['status'] == 'Resolved'].copy()
     
-    # --- SECTION A: ACTIVE PENDING TRIAGE FEED ---
     st.title("Your Pending Reviews")
     
     if pending_df.empty:
@@ -81,21 +75,18 @@ else:
                 if row['priority'] == 1:
                     st.error("🚨 Urgent Action Needed!")
                 
-                # Dispatch action anchor button
-                safe_suggestion = urllib.parse.quote("Thank you for your feedback!") 
-                reply_url = f"http://127.0.0.1:5000/admin/reply/{row['id']}?suggested={safe_suggestion}"
+                # Direct route link to target review workspace without payload arguments
+                reply_url = f"http://127.0.0.1:5000/admin/reply/{row['id']}"
                 st.link_button("Reply on Website", reply_url)
                 
                 st.divider()
 
-    # --- SECTION B: ARCHIVED HISTORY AUDIT LOG ---
     st.write("")
     st.header("✅ Resolved Review History")
     
     if resolved_df.empty:
         st.write("No reviews resolved yet.")
     else:
-        # Sort history to reveal newly completed updates first
         resolved_df = resolved_df.sort_values(by=['date'], ascending=False)
         
         for idx, row in resolved_df.iterrows():

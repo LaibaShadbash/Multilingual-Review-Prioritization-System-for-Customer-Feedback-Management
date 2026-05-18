@@ -5,7 +5,6 @@ from datetime import datetime
 
 app = Flask(__name__)
 
-# Updated Customer Review Page with CSS link
 HOME_HTML = '''
 <!DOCTYPE html>
 <html>
@@ -55,9 +54,6 @@ def admin_reply_page(review_id):
     review = conn.execute("SELECT * FROM reviews WHERE id = ?", (review_id,)).fetchone()
     conn.close()
     
-    # We grab the 'suggested' text from the URL (sent by Streamlit)
-    suggestion = request.args.get('suggested', '')
-
     return f'''
     <!DOCTYPE html>
     <html>
@@ -71,8 +67,8 @@ def admin_reply_page(review_id):
                 <p><strong>Customer:</strong> {review['content']}</p>
             </div>
             <form action="/admin/submit_reply/{review_id}" method="post">
-                <label>AI Suggested Reply:</label>
-                <textarea name="reply_content" rows="5" required>{suggestion}</textarea>
+                <label>Your Reply:</label>
+                <textarea name="reply_content" rows="5" required placeholder="Write your response here..."></textarea>
                 <button type="submit">Post Reply & Resolve</button>
             </form>
         </div>
